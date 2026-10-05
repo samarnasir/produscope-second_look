@@ -47,7 +47,7 @@ export function Sheet({ title, subtitle, onClose, children, footer, labelId = 's
   }, [onClose])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="presentation">
+    <div className="fixed inset-0 z-50 flex items-end justify-center sm:max-lg:items-center" role="presentation">
       <div className="absolute inset-0 animate-fade-in bg-navy/50" onClick={onClose} aria-hidden="true" />
       <div
         ref={ref}
@@ -55,9 +55,9 @@ export function Sheet({ title, subtitle, onClose, children, footer, labelId = 's
         aria-modal="true"
         aria-labelledby={labelId}
         tabIndex={-1}
-        className="relative flex max-h-[92dvh] w-full animate-sheet-up flex-col rounded-t-2xl bg-white shadow-xl outline-none sm:max-w-[480px] sm:rounded-2xl"
+        className="relative flex max-h-[92dvh] lg:max-h-[calc(100%-3.5rem)] w-full animate-sheet-up flex-col rounded-t-2xl bg-white shadow-xl outline-none sm:max-lg:max-w-[480px] sm:max-lg:rounded-2xl"
       >
-        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-line sm:hidden" aria-hidden="true" />
+        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-line sm:max-lg:hidden" aria-hidden="true" />
         <div className="flex items-start justify-between gap-3 px-5 pt-4">
           <div>
             <h2 id={labelId} className="text-xl font-bold text-navy">
