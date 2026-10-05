@@ -15,10 +15,32 @@
   --color-warn-pale: #fdebd0;
   --color-good: #2e8b57;
   --color-good-pale: #eaf5ee;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   @apply bg-white text-ink antialiased;
   font-feature-settings: "tnum" 1;
 }
+
+@theme {
+  --animate-sheet-up: sheet-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-fade-in: fade-in 200ms ease-out;
+  --animate-rise: rise 240ms ease-out;
+  --animate-draw: draw 480ms 120ms ease-out both;
+  --animate-pop: pop 320ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+@keyframes sheet-up { from { transform: translateY(24px); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes rise { from { transform: translateY(8px); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes draw { from { stroke-dashoffset: 30 } to { stroke-dashoffset: 0 } }
+@keyframes pop { from { transform: scale(0.8); opacity: 0 } to { transform: none; opacity: 1 } }
+@keyframes bar-grow { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+}
+
+:focus-visible { outline: 3px solid var(--color-blue); outline-offset: 2px; border-radius: 6px; }
+html { -webkit-text-size-adjust: 100%; }
+button { cursor: pointer; }
