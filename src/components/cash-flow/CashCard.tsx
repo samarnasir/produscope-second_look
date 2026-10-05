@@ -12,13 +12,13 @@ function Row({ title, sub, onClick }: { title: string; sub: string; onClick: () 
     <button
       type="button"
       onClick={onClick}
-      className="flex min-h-[64px] w-full items-center justify-between gap-3 rounded-xl border border-line bg-white px-4 py-3 text-left transition-colors hover:border-blue hover:bg-blue-pale"
+      className="flex min-h-[64px] w-full items-center justify-between gap-3 rounded-xl border border-graphite bg-carbon px-4 py-3 text-left transition-colors hover:border-fog hover:bg-white/5"
     >
       <span>
-        <span className="block text-[15px] font-semibold text-navy">{title}</span>
-        <span className="block text-sm text-ink">{sub}</span>
+        <span className="block text-[15px] font-semibold text-paper">{title}</span>
+        <span className="block text-sm text-mist">{sub}</span>
       </span>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-blue" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-mist" aria-hidden="true">
         <path d="m6 3 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
@@ -35,7 +35,7 @@ function ChipGroup<T extends number>({ label, values, value, onChange, format }:
           role="radio"
           aria-checked={value === v}
           onClick={() => onChange(v)}
-          className={`min-h-12 rounded-xl border px-2 text-[15px] font-semibold transition-colors ${value === v ? 'border-blue bg-blue text-white' : 'border-line text-navy hover:border-blue hover:bg-blue-pale'}`}
+          className={`min-h-12 rounded-md border px-2 text-sm font-semibold transition-colors ${value === v ? 'border-mist bg-white/10 text-paper' : 'border-graphite text-paper hover:border-fog hover:bg-white/5'}`}
         >
           {format(v)}
         </button>
@@ -54,29 +54,29 @@ export function CashCard({ flow }: { flow: Flow }) {
     <>
       <div className="px-5 pb-8 pt-3">
         <BackButton onClick={() => actions.goto('reason')} />
-        <h1 className="mt-1 text-[28px] font-bold leading-tight text-navy">{c.title}</h1>
-        <Card className="mt-3 border-blue/30 bg-blue-pale/60 p-4">
+        <h1 className="mt-1 text-[28px] font-bold leading-tight text-paper">{c.title}</h1>
+        <Card className="mt-3 border-smoke bg-white/[0.03] p-4">
           {p.cashNeed && (
-            <p className="mb-1 text-sm font-semibold text-navy">
+            <p className="mb-1 text-sm font-semibold text-paper">
               You need {inr(p.cashNeed.amount)} for {p.cashNeed.reason}.
             </p>
           )}
-          <p className="text-[15px] leading-snug text-ink">{c.body}</p>
+          <p className="text-[15px] leading-snug text-mist">{c.body}</p>
         </Card>
 
         <Button className="mt-4 w-full" onClick={() => actions.decide('pause_anyway')}>
           {c.pause}
         </Button>
-        <p className="mt-1.5 text-center text-xs text-muted">{c.pauseNote}</p>
+        <p className="mt-1.5 text-center text-xs text-fog">{c.pauseNote}</p>
 
-        <p className="mb-2 mt-6 text-[11px] font-bold tracking-[0.12em] text-blue">OR KEEP YOUR SIP AND FREE UP CASH</p>
+        <p className="mb-2 mt-6 text-[11px] font-bold tracking-[0.12em] text-mist">OR KEEP YOUR SIP AND FREE UP CASH</p>
         <div className="space-y-2.5">
           <Row title={c.skip} sub={c.skipSub(p.sip.nextLabel, p.sip.resume1mLabel)} onClick={() => actions.decide('skip_1')} />
           <Row title={c.reduce} sub={c.reduceSub} onClick={() => actions.openSheet('reduce')} />
           <Row title={c.move} sub={c.moveSub} onClick={() => actions.openSheet('move_date')} />
           <Row title={c.emergency} sub={c.emergencySub} onClick={() => actions.openSheet('emergency')} />
         </div>
-        <p className="mt-5 text-center text-xs text-muted">{copy.disclaimer}</p>
+        <p className="mt-5 text-center text-xs text-fog">{copy.disclaimer}</p>
       </div>
 
       {state.sheet === 'reduce' && (
@@ -99,8 +99,8 @@ export function CashCard({ flow }: { flow: Flow }) {
         <Sheet title={c.emergencyTitle} onClose={actions.closeSheet} labelId="emergency-title">
           <ul className="space-y-3">
             {c.emergencyLines.map((l) => (
-              <li key={l} className="flex gap-3 text-[15px] text-ink">
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-blue" aria-hidden="true" />
+              <li key={l} className="flex gap-3 text-[15px] text-mist">
+                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-fog" aria-hidden="true" />
                 {l}
               </li>
             ))}

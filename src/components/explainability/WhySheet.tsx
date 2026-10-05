@@ -29,35 +29,35 @@ export function WhySheet({ flow, focus }: { flow: Flow; focus: NumberId }) {
           <Button className="w-full" onClick={actions.closeWhy}>
             {copy.why.close}
           </Button>
-          <p className="mt-2 text-center text-xs font-semibold text-navy">{copy.disclaimer}</p>
+          <p className="mt-2 text-center text-xs font-semibold text-paper">{copy.disclaimer}</p>
         </div>
       }
     >
-      <p className="rounded-xl bg-blue-pale p-3.5 text-[15px] leading-snug text-navy" data-testid="plain-words">
+      <p className="rounded-xl bg-white/5 p-3.5 text-[15px] leading-snug text-paper" data-testid="plain-words">
         {sentence}
       </p>
-      <p className="mt-2 text-xs text-muted">{copy.why.engineNote}</p>
+      <p className="mt-2 text-xs text-fog">{copy.why.engineNote}</p>
 
       <dl className="mt-5 space-y-3.5 text-[15px]">
         <div>
-          <dt className="text-[11px] font-bold tracking-[0.12em] text-blue">{copy.why.data.toUpperCase()}</dt>
-          <dd className="mt-0.5 text-ink">{DATA_LINE}</dd>
+          <dt className="text-[11px] font-bold tracking-[0.12em] text-mist">{copy.why.data.toUpperCase()}</dt>
+          <dd className="mt-0.5 text-mist">{DATA_LINE}</dd>
         </div>
         <div>
-          <dt className="text-[11px] font-bold tracking-[0.12em] text-blue">{copy.why.assumptions.toUpperCase()}</dt>
-          <dd className="mt-0.5 text-ink">
+          <dt className="text-[11px] font-bold tracking-[0.12em] text-mist">{copy.why.assumptions.toUpperCase()}</dt>
+          <dd className="mt-0.5 text-mist">
             {ASSUMPTION_LINE}
             <br />
             {RECOVERY_NOTE}
           </dd>
         </div>
         <div>
-          <dt className="text-[11px] font-bold tracking-[0.12em] text-blue">{copy.why.updated.toUpperCase()}</dt>
-          <dd className="mt-0.5 text-ink">{UPDATED_LINE}</dd>
+          <dt className="text-[11px] font-bold tracking-[0.12em] text-mist">{copy.why.updated.toUpperCase()}</dt>
+          <dd className="mt-0.5 text-mist">{UPDATED_LINE}</dd>
         </div>
       </dl>
 
-      <h3 className="mt-6 text-sm font-bold text-navy">{copy.why.how}</h3>
+      <h3 className="mt-6 text-sm font-bold text-paper">{copy.why.how}</h3>
       <ul className="mt-2 space-y-2">
         {sources.map((s) => {
           const on = focused(s.id)
@@ -66,16 +66,16 @@ export function WhySheet({ flow, focus }: { flow: Flow; focus: NumberId }) {
               key={s.id}
               ref={s.id === focus ? focusRef : undefined}
               data-focused={on || undefined}
-              className={`rounded-xl border p-3 ${on ? 'border-blue bg-blue-pale/60' : 'border-line'}`}
+              className={`rounded-xl border p-3 ${on ? 'border-smoke bg-white/[0.03]' : 'border-graphite'}`}
             >
-              <p className="text-sm font-semibold text-navy">{s.label}</p>
-              <p className="mt-0.5 text-xs text-muted">Source: {s.source}</p>
-              <p className="mt-1.5 text-sm text-ink">{s.how}</p>
+              <p className="text-sm font-semibold text-paper">{s.label}</p>
+              <p className="mt-0.5 text-xs text-fog">Source: {s.source}</p>
+              <p className="mt-1.5 text-sm text-mist">{s.how}</p>
             </li>
           )
         })}
       </ul>
-      <p className="mt-4 text-xs text-muted">{copy.why.consent}</p>
+      <p className="mt-4 text-xs text-fog">{copy.why.consent}</p>
     </Sheet>
   )
 }

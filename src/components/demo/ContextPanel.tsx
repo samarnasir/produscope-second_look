@@ -16,13 +16,11 @@ const ACTIVE: Record<Step, number[]> = {
   checkin: [4],
 }
 
-export function ContextPanel({ flow, dark = false }: { flow: Flow; dark?: boolean }) {
+export function ContextPanel({ flow }: { flow: Flow }) {
   const { profile, state } = flow
   const events = useSyncExternalStore(subscribe, getEvents)
   const active = ACTIVE[state.step]
-  const t = dark
-    ? { head: 'text-white', sub: 'text-white/70', card: 'bg-white/5 border-white/15', label: 'text-blue-tint', act: 'bg-blue text-white', idle: 'text-white/60' }
-    : { head: 'text-navy', sub: 'text-ink', card: 'bg-surface border-line', label: 'text-blue', act: 'bg-blue text-white', idle: 'text-muted' }
+  const t = { head: 'text-paper', sub: 'text-mist', card: 'bg-white/[0.02] border-graphite', label: 'text-fog', idle: 'text-fog' }
 
   return (
     <div className="space-y-7">
@@ -75,14 +73,14 @@ export function ContextPanel({ flow, dark = false }: { flow: Flow; dark?: boolea
               <li
                 key={name}
                 aria-current={on ? 'step' : undefined}
-                className={`flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors ${on ? 'border-blue bg-blue' : t.card}`}
+                className={`flex items-center gap-3 rounded-md border px-3 py-2 transition-colors ${on ? 'border-mist bg-white/10' : t.card}`}
               >
-                <span className={`grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold ${on ? 'bg-white text-blue' : 'bg-white/10 ' + t.idle}`}>
+                <span className={`grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-bold ${on ? 'bg-paper text-void' : 'bg-white/10 ' + t.idle}`}>
                   {i + 1}
                 </span>
                 <span className="min-w-0">
-                  <span className={`block text-sm font-semibold ${on ? 'text-white' : t.head}`}>{name}</span>
-                  <span className={`block text-xs ${on ? 'text-white/85' : t.idle}`}>{desc}</span>
+                  <span className={`block text-sm font-semibold ${t.head}`}>{name}</span>
+                  <span className={`block text-xs ${on ? 'text-mist' : t.idle}`}>{desc}</span>
                 </span>
               </li>
             )

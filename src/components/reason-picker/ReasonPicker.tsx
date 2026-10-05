@@ -45,22 +45,22 @@ export function ReasonPicker({ flow }: { flow: Flow }) {
               onClick={() => choose(o)}
               className={[
                 'flex w-full items-center justify-between gap-3 rounded-xl border px-4 text-left transition-colors',
-                o.prominent ? 'min-h-[72px] border-2 py-3' : 'min-h-14 py-2.5',
+                o.prominent ? 'min-h-[72px] py-3' : 'min-h-14 py-2.5',
                 on
-                  ? 'border-blue bg-blue text-white'
+                  ? 'border-mist bg-white/10 text-paper'
                   : o.v2
-                    ? 'border-line bg-surface text-muted hover:bg-white'
+                    ? 'border-graphite bg-transparent text-ash hover:bg-white/5'
                     : o.prominent
-                      ? 'border-blue bg-blue-pale text-navy hover:bg-blue-tint/50'
-                      : 'border-line bg-white text-navy hover:border-blue hover:bg-blue-pale',
+                      ? 'border-smoke bg-obsidian text-paper hover:bg-white/10'
+                      : 'border-graphite bg-carbon text-paper hover:border-fog hover:bg-white/5',
               ].join(' ')}
             >
               <span>
                 <span className={`block font-semibold ${o.prominent ? 'text-[17px]' : 'text-[15px]'}`}>{o.label}</span>
-                {o.hint && <span className={`block text-xs ${on ? 'text-white/85' : 'text-muted'}`}>{o.hint}</span>}
+                {o.hint && <span className={`block text-xs ${on ? 'text-mist' : 'text-fog'}`}>{o.hint}</span>}
               </span>
               {o.v2 ? (
-                <span className="rounded-full border border-muted/40 bg-white px-2 py-0.5 text-[11px] font-bold text-muted">V2</span>
+                <span className="rounded-full border border-smoke bg-carbon px-2 py-0.5 text-[11px] font-bold text-fog">V2</span>
               ) : (
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path d="m6 3 5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
@@ -78,9 +78,9 @@ export function V2Sheet({ flow }: { flow: Flow }) {
   const { actions } = flow
   return (
     <Sheet title={copy.reason.v2Title} subtitle={copy.reason.v2Body} onClose={actions.closeSheet} labelId="v2-title">
-      <div className="rounded-xl border border-line bg-surface p-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-muted">{copy.reason.v2Preview}</p>
-        <p className="mt-1.5 text-[15px] text-ink">{copy.reason.v2Detail}</p>
+      <div className="rounded-xl border border-graphite bg-white/5 p-4">
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-fog">{copy.reason.v2Preview}</p>
+        <p className="mt-1.5 text-[15px] text-mist">{copy.reason.v2Detail}</p>
       </div>
       <Button className="mt-5 w-full" onClick={actions.closeSheet}>
         {copy.reason.v2Back}

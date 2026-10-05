@@ -23,9 +23,9 @@ export function DecisionScreen({ flow }: { flow: Flow }) {
     <>
       <div className="px-5 pb-6 pt-3">
         <BackButton onClick={() => actions.goto(backTo)} />
-        <h1 className="mt-1 text-[28px] font-bold leading-tight text-navy">{d.title}</h1>
-        <p className="mt-1 text-sm text-muted">{d.sub}</p>
-        <p className="mt-3 inline-flex rounded-full bg-blue-pale px-3 py-1 text-xs font-semibold text-blue-strong">
+        <h1 className="mt-1 text-[28px] font-bold leading-tight text-paper">{d.title}</h1>
+        <p className="mt-1 text-sm text-fog">{d.sub}</p>
+        <p className="mt-3 inline-flex rounded-full bg-white/5 px-3 py-1 text-xs font-semibold text-mist">
           SIP active · next instalment {state.sip.nextLabel}
         </p>
 
@@ -35,17 +35,17 @@ export function DecisionScreen({ flow }: { flow: Flow }) {
               key={i.choice}
               type="button"
               onClick={() => actions.decide(i.choice)}
-              className="flex min-h-[72px] w-full flex-col justify-center rounded-xl border border-blue bg-white px-4 py-3 text-left transition-colors hover:bg-blue-pale"
+              className="flex min-h-[72px] w-full flex-col justify-center rounded-xl border border-smoke bg-carbon px-4 py-3 text-left transition-colors hover:bg-white/5"
             >
-              <span className="text-base font-semibold text-blue">{i.label}</span>
-              <span className="mt-0.5 text-sm text-ink">{i.sub}</span>
+              <span className="text-base font-semibold text-mist">{i.label}</span>
+              <span className="mt-0.5 text-sm text-mist">{i.sub}</span>
             </button>
           ))}
         </div>
-        <p className="mt-5 text-center text-xs text-muted">{copy.disclaimer}</p>
+        <p className="mt-5 text-center text-xs text-fog">{copy.disclaimer}</p>
       </div>
       <Footer>
-        <p className="text-center text-sm font-medium text-navy">{d.footer}</p>
+        <p className="text-center text-sm font-medium text-paper">{d.footer}</p>
       </Footer>
     </>
   )

@@ -10,11 +10,11 @@ export function Confirmation({ flow }: { flow: Flow }) {
   return (
     <>
       <div className="flex flex-1 flex-col items-center px-5 pb-6 pt-12 text-center">
-        <div className="grid size-20 animate-pop place-items-center rounded-full bg-good-pale" aria-hidden="true">
+        <div className="grid size-20 animate-pop place-items-center rounded-full bg-pulse-green/15" aria-hidden="true">
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
             <path
               d="M10 21l7 7 13-15"
-              stroke="#2e8b57"
+              stroke="#27a644"
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -23,21 +23,21 @@ export function Confirmation({ flow }: { flow: Flow }) {
             />
           </svg>
         </div>
-        <h1 className="mt-5 text-[30px] font-bold text-navy">{copy.confirm.title}</h1>
-        <p className="mt-0.5 text-sm font-semibold text-good">{copy.confirm.saved}</p>
+        <h1 className="mt-5 text-[30px] font-bold text-paper">{copy.confirm.title}</h1>
+        <p className="mt-0.5 text-sm font-semibold text-pulse-green">{copy.confirm.saved}</p>
 
         <div className="mt-6 animate-rise">
-          <p className="text-lg font-semibold text-navy" data-testid="outcome-headline">
+          <p className="text-lg font-semibold text-paper" data-testid="outcome-headline">
             {o.headline}
           </p>
-          <p className="mt-1 text-[15px] text-ink" data-testid="outcome-body">
+          <p className="mt-1 text-[15px] text-mist" data-testid="outcome-body">
             {o.body}
           </p>
         </div>
 
-        <Card className="mt-6 w-full bg-blue-pale/60 p-4 text-left">
-          <p className="text-sm font-bold text-navy">{copy.confirm.checkinTitle}</p>
-          <p className="mt-0.5 text-sm text-ink">{copy.confirm.checkinBody}</p>
+        <Card className="mt-6 w-full bg-white/[0.03] p-4 text-left">
+          <p className="text-sm font-bold text-paper">{copy.confirm.checkinTitle}</p>
+          <p className="mt-0.5 text-sm text-mist">{copy.confirm.checkinBody}</p>
         </Card>
       </div>
       <Footer>

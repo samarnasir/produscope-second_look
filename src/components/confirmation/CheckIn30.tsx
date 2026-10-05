@@ -10,18 +10,17 @@ export function CheckIn30({ flow }: { flow: Flow }) {
   return (
     <>
       <div className="px-5 pb-6 pt-8">
-        <p className="text-xs font-semibold text-muted">{copy.checkin.preview}</p>
+        <p className="text-xs font-semibold text-fog">{copy.checkin.preview}</p>
         <Card className="mt-3 overflow-hidden">
-          <div className="h-1 bg-blue" aria-hidden="true" />
           <div className="p-5">
-            <h1 className="text-2xl font-bold text-navy">{o.checkin.title}</h1>
-            <p className="mt-3 text-[17px] leading-snug text-ink">{o.checkin.body}</p>
+            <h1 className="text-2xl font-bold text-paper">{o.checkin.title}</h1>
+            <p className="mt-3 text-[17px] leading-snug text-mist">{o.checkin.body}</p>
             <div className="mt-4">
               <Chip tone="blue">{o.checkin.status}</Chip>
             </div>
           </div>
         </Card>
-        <p className="mt-4 text-center text-xs text-muted">{copy.disclaimer}</p>
+        <p className="mt-4 text-center text-xs text-fog">{copy.disclaimer}</p>
       </div>
       <Footer>
         <div className="grid grid-cols-2 gap-3">
