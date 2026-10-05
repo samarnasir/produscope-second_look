@@ -2,20 +2,17 @@
 export const copy = {
   brand: 'Second Look',
   disclaimer: 'This is information, not investment advice.',
-  landing: {
-    eyebrow: 'SIP pause or reduction',
-    cta: 'Try the Second Look',
-    tagline: 'Platforms already make pausing easy. Second Look makes it informed.',
-    arjunTitle: 'Same button, different need',
-    arjunBody: 'Arjun, 34, needs ₹40,000 for a medical bill. Try his pause.',
-    arjunCta: "Try Arjun's pause",
+  account: {
+    title: 'Account',
+    switch: 'Switch account',
+    tips: 'Tips',
+    reset: 'Start over',
   },
   sip: {
     title: 'My SIPs',
     pause: 'Pause',
     stop: 'Stop',
     resume: 'Resume SIP',
-    reset: 'Restart demo',
     stopTitle: 'Stop is outside this prototype',
     stopBody: "Second Look's MVP covers Pause or reduce. Stop isn't part of this demo.",
     close: 'Close',
@@ -109,10 +106,10 @@ export const copy = {
     checkinTitle: 'Check-in on day 30',
     checkinBody: "We'll check in again after 30 days.",
     done: 'Done',
-    preview: 'Preview day-30 check-in',
+    preview: 'See day-30 check-in',
   },
   checkin: {
-    preview: 'Prototype preview of the day-30 message.',
+    preview: '30 days later',
     back: 'Back to SIP',
     restart: 'Start over',
   },
@@ -120,35 +117,18 @@ export const copy = {
     skip: 'Skip tips',
     next: 'Next',
     gotIt: 'Got it',
-    toggleOn: 'Tips on',
-    toggleOff: 'Tips off',
     tips: {
-      landing: [
-        { target: 'start', title: 'Start here', body: 'Follow Riya, 27, as her portfolio drops 9% and she thinks about pausing her SIP.' },
-      ],
-      sip_detail: [
-        { target: 'pause', title: 'The moment that matters', body: 'Every platform makes Pause one tap. Second Look steps in here, before the pause is final.' },
-      ],
-      reason: [
-        { target: 'reason-market', title: 'One tap says why', body: 'Different reasons get different help. Pick Market is falling to see the fear card.' },
-      ],
+      sip_detail: [{ target: 'pause', title: 'Tap Pause', body: 'See what Second Look shows before the pause is final.' }],
+      reason: [{ target: 'reason-market', title: 'Pick a reason', body: 'Market is falling opens a card built from your own goal and portfolio.' }],
       fear: [
-        { target: 'goal-card', title: 'Result: what pausing changes', body: 'A 6-month pause, shown against keeping the SIP running. The engine calculates every number; AI only explains it.' },
-        { target: 'why', title: 'Every number has a source', body: 'Tap to see the data, assumptions and update date behind each figure.' },
-        { target: 'pause-anyway', title: 'You stay in control', body: 'Pause anyway is always one tap. Second Look informs the decision; it never blocks it.' },
+        { target: 'goal-card', title: 'What a pause changes', body: 'A 6-month pause compared with keeping your SIP running.' },
+        { target: 'why', title: 'Where the numbers come from', body: 'Sources, assumptions and the update date for every figure.' },
+        { target: 'pause-anyway', title: 'Still your call', body: 'Pause anyway is always one tap.' },
       ],
-      why: [
-        { target: 'why-assumptions', title: 'Check the work', body: 'Data, assumptions and last update, plus how each figure was calculated.' },
-      ],
-      decision: [
-        { target: 'decision-list', title: 'Equal choices', body: 'Nothing is pre-selected, hidden or smaller. The investor decides.' },
-      ],
-      cash: [
-        { target: 'cash-pause', title: 'Cash first, no lecture', body: 'Pause stays the primary button. The options below free up cash without stopping the SIP.' },
-      ],
-      confirmed: [
-        { target: 'outcome', title: 'Result: choice saved', body: 'The decision is recorded and a day-30 check-in is queued. Tracked events show in the demo log (Demo info on phones).' },
-      ],
+      why: [{ target: 'why-assumptions', title: 'Sources and assumptions', body: 'Everything behind the numbers, in one place.' }],
+      decision: [{ target: 'decision-list', title: 'Your choice', body: 'All options carry equal weight. Nothing is pre-selected.' }],
+      cash: [{ target: 'cash-pause', title: 'Pause comes first', body: 'The options below free up cash without stopping your SIP.' }],
+      confirmed: [{ target: 'outcome', title: 'All set', body: "Your choice is saved. We'll check in again on day 30." }],
     } as Record<string, { target: string; title: string; body: string }[]>,
   },
   panel: {

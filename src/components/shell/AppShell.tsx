@@ -5,16 +5,21 @@ import { ContextPanel } from '../demo/ContextPanel'
 import type { Flow } from '../../state/flow'
 import { copy } from '../../content/copy'
 
+/** Presenter view (?debug): shows the engine pipeline and the event log beside the phone. */
+const debug = new URLSearchParams(window.location.search).has('debug')
+
 export function AppShell({ flow, tour, children }: { flow: Flow; tour: Tour; children: ReactNode }) {
-  const { state } = flow
+  const { profile } = flow
   const frame = useRef<HTMLDivElement>(null)
   return (
-    <div className="min-h-dvh lg:grid lg:grid-cols-[400px_1fr]">
-      <aside className="hidden border-r border-graphite bg-carbon text-paper lg:block">
-        <div className="sticky top-0 h-dvh overflow-y-auto p-7">
-          <ContextPanel flow={flow} />
-        </div>
-      </aside>
+    <div className={`min-h-dvh ${debug ? 'lg:grid lg:grid-cols-[400px_1fr]' : ''}`}>
+      {debug && (
+        <aside className="hidden border-r border-graphite bg-carbon text-paper lg:block">
+          <div className="sticky top-0 h-dvh overflow-y-auto p-7">
+            <ContextPanel flow={flow} />
+          </div>
+        </aside>
+      )}
       <div className="flex min-h-dvh justify-center bg-void lg:items-center lg:py-4">
         {/* Desktop: phone frame. The transform makes it the containing block for fixed-position sheets. */}
         <div
@@ -34,32 +39,14 @@ export function AppShell({ flow, tour, children }: { flow: Flow; tour: Tour; chi
                 </span>
                 <span className="text-[15px] font-bold tracking-tight text-paper">{copy.brand}</span>
               </div>
-              <div className="flex items-center gap-1">
               <button
                 type="button"
-                onClick={() => flow.actions.openSheet('demo')}
-                className="min-h-11 rounded-md px-2 text-sm font-medium text-mist hover:bg-white/5 lg:hidden"
+                onClick={() => flow.actions.openSheet('account')}
+                aria-label={copy.account.title}
+                className="grid size-9 place-items-center rounded-full bg-white/10 text-sm font-semibold text-paper hover:bg-white/15"
               >
-                {copy.panel.title}
+                {profile.firstName[0]}
               </button>
-              <button
-                type="button"
-                onClick={tour.toggle}
-                aria-pressed={tour.on}
-                className="min-h-11 rounded-md px-2 text-sm text-fog hover:bg-white/5 hover:text-mist"
-              >
-                {tour.on ? copy.tour.toggleOn : copy.tour.toggleOff}
-              </button>
-              {state.step !== 'landing' && (
-                <button
-                  type="button"
-                  onClick={flow.actions.reset}
-                  className="hidden min-h-11 rounded-md px-2 text-sm font-medium text-fog hover:bg-white/5 lg:block"
-                >
-                  {copy.sip.reset}
-                </button>
-              )}
-              </div>
             </header>
             <main className="flex flex-1 flex-col">{children}</main>
           </div>

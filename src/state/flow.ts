@@ -7,8 +7,8 @@ import { cardFor } from '../lib/rules'
 import { trackEvent, resetEvents } from '../lib/analytics'
 import type { NumberId } from '../lib/explainability'
 
-export type Step = 'landing' | 'sip_detail' | 'reason' | 'fear' | 'cash' | 'decision' | 'confirmed' | 'checkin'
-export type Sheet = 'stop' | 'v2' | 'reduce' | 'move_date' | 'emergency' | 'demo' | null
+export type Step = 'sip_detail' | 'reason' | 'fear' | 'cash' | 'decision' | 'confirmed' | 'checkin'
+export type Sheet = 'stop' | 'v2' | 'reduce' | 'move_date' | 'emergency' | 'account' | null
 
 export interface State {
   user: UserId
@@ -32,7 +32,7 @@ const freshSip = (p: Profile): State['sip'] => ({
 
 const initial = (user: UserId = 'riya'): State => ({
   user,
-  step: 'landing',
+  step: 'sip_detail',
   whyOpen: null,
   sheet: null,
   sip: freshSip(PROFILES[user]),
@@ -84,21 +84,21 @@ function reducer(s: State, a: Action): State {
 function guard(s: State): State {
   const needsReason: Step[] = ['fear', 'cash', 'decision']
   const needsChoice: Step[] = ['confirmed', 'checkin']
-  if (s.step !== 'landing' && s.step !== 'sip_detail' && s.step !== 'reason') {
+  if (s.step !== 'sip_detail' && s.step !== 'reason') {
     if (needsReason.includes(s.step) && !s.reason) return { ...s, step: 'sip_detail' }
     if (needsChoice.includes(s.step) && !s.choice) return { ...s, step: 'sip_detail' }
   }
   return s
 }
 
-const STEPS: Step[] = ['landing', 'sip_detail', 'reason', 'fear', 'cash', 'decision', 'confirmed', 'checkin']
+const STEPS: Step[] = ['sip_detail', 'reason', 'fear', 'cash', 'decision', 'confirmed', 'checkin']
 const stepFromHash = (): Step => {
   const h = window.location.hash.replace('#/', '').replace('#', '') as Step
-  return STEPS.includes(h) ? h : 'landing'
+  return STEPS.includes(h) ? h : 'sip_detail'
 }
 
 export function useFlow() {
-  const [state, dispatch] = useReducer(reducer, undefined, () => ({ ...initial(), step: 'landing' as Step }))
+  const [state, dispatch] = useReducer(reducer, undefined, () => initial())
   const profile = PROFILES[state.user]
 
   // Step ↔ hash, so the browser Back button walks the flow.

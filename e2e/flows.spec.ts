@@ -14,20 +14,20 @@ const noHScroll = async (page: Page) =>
 
 async function toReasons(page: Page, who: 'riya' | 'arjun' = 'riya') {
   await page.goto('/?tips=off')
-  if (who === 'riya') await page.getByRole('button', { name: 'Try the Second Look' }).click()
-  else await page.getByRole('button', { name: /Try Arjun's pause/ }).click()
+  if (who === 'arjun') {
+    await page.getByRole('button', { name: 'Account' }).click()
+    await page.getByRole('radio', { name: /Arjun Mehta/ }).click()
+  }
   await page.getByRole('button', { name: 'Pause', exact: true }).click()
   await expect(page.getByRole('dialog', { name: "What's making you pause?" })).toBeVisible()
 }
 
 test.describe('Riya: market is falling', () => {
-  test('landing → SIP → reason → fear card with deck numbers', async ({ page }) => {
+  test('opens on the SIP → reason → fear card with deck numbers', async ({ page }) => {
     const errors = watchErrors(page)
     await page.goto('/?tips=off')
-    await expect(page.getByRole('heading', { name: /Riya's portfolio is down 9%/ })).toBeVisible()
-    await expect(page.getByText('She is considering pausing her ₹5,000 monthly SIP.')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'My SIPs' })).toBeVisible()
     await noHScroll(page)
-    await page.getByRole('button', { name: 'Try the Second Look' }).click()
     await expect(page.getByText('Flexi-cap fund').first()).toBeVisible()
     await expect(page.getByText('₹5,000').first()).toBeVisible()
     await page.getByRole('button', { name: 'Pause', exact: true }).click()
@@ -99,7 +99,7 @@ test.describe('Riya: market is falling', () => {
       await expect(page.getByTestId('outcome-body')).toContainText(body)
       await expect(page.getByText('Check-in on day 30')).toBeVisible()
 
-      await page.getByRole('button', { name: 'Preview day-30 check-in' }).click()
+      await page.getByRole('button', { name: 'See day-30 check-in' }).click()
       await expect(page.getByRole('heading', { name: '30-day check-in' })).toBeVisible()
       if (label === 'Continue') await expect(page.getByText('Last time, you chose to keep your SIP running during the market fall.')).toBeVisible()
       await page.getByRole('button', { name: 'Back to SIP' }).click()
@@ -201,7 +201,6 @@ test.describe('other reasons', () => {
 
   test('Stop opens an explanatory sheet', async ({ page }) => {
     await page.goto('/?tips=off')
-    await page.getByRole('button', { name: 'Try the Second Look' }).click()
     await page.getByRole('button', { name: 'Stop', exact: true }).click()
     await expect(page.getByRole('dialog', { name: 'Stop is outside this prototype' })).toBeVisible()
     await page.getByRole('button', { name: 'Close', exact: true }).last().click()
@@ -229,9 +228,10 @@ test.describe('Arjun', () => {
   })
 })
 
-test('event log records the deck events', async ({ page }) => {
+test('event log (?debug) records the deck events', async ({ page }) => {
   test.skip(page.viewportSize()!.width < 1024, 'event log panel is desktop-only')
-  await toReasons(page)
+  await page.goto('/?tips=off&debug=1')
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
   await page.getByRole('button', { name: /Market is falling/ }).click()
   await page.getByRole('button', { name: 'Why am I seeing this?', exact: true }).click()
   await page.keyboard.press('Escape')
@@ -249,8 +249,6 @@ test('responsive layout screenshots', async ({ page }, info) => {
     await noHScroll(page)
   }
   await page.goto('/?tips=off')
-  await shot('1-landing')
-  await page.getByRole('button', { name: 'Try the Second Look' }).click()
   await shot('2-sip')
   await page.getByRole('button', { name: 'Pause', exact: true }).click()
   await shot('3-reasons')
@@ -263,10 +261,9 @@ test('responsive layout screenshots', async ({ page }, info) => {
   await shot('6-decision')
   await page.getByRole('button', { name: /^Remind me in 48 hours/ }).click()
   await shot('7-confirmed')
-  await page.getByRole('button', { name: 'Preview day-30 check-in' }).click()
+  await page.getByRole('button', { name: 'See day-30 check-in' }).click()
   await shot('8-checkin')
   await page.getByRole('button', { name: 'Start over' }).click()
-  await page.getByRole('button', { name: 'Try the Second Look' }).click()
   await page.getByRole('button', { name: 'Pause', exact: true }).click()
   await page.getByRole('button', { name: /Need cash/ }).click()
   await shot('9-cash', true)
@@ -277,27 +274,24 @@ test.describe('guided tips', () => {
     const errors = watchErrors(page)
     await page.goto('/')
     const tip = page.getByTestId('coach-tip')
-    await expect(tip).toContainText('Start here')
-    await page.getByRole('button', { name: 'Got it' }).click()
-    await expect(tip).toBeHidden()
-    await page.getByRole('button', { name: 'Try the Second Look' }).click()
-    await expect(tip).toContainText('The moment that matters')
+    await expect(tip).toContainText('Tap Pause')
     await page.screenshot({ path: `test-results/tip-sip-${test.info().project.name}.png` })
     await page.getByRole('button', { name: 'Pause', exact: true }).click()
-    await expect(tip).toContainText('One tap says why')
+    await expect(tip).toContainText('Pick a reason')
     await page.getByRole('button', { name: /Market is falling/ }).click()
-    await expect(tip).toContainText('Result: what pausing changes')
+    await expect(tip).toContainText('What a pause changes')
     await page.screenshot({ path: `test-results/tip-fear-${test.info().project.name}.png` })
     await page.getByRole('button', { name: 'Next' }).click()
-    await expect(tip).toContainText('Every number has a source')
+    await expect(tip).toContainText('Where the numbers come from')
     await page.getByRole('button', { name: 'Next' }).click()
-    await expect(tip).toContainText('You stay in control')
+    await expect(tip).toContainText('Still your call')
     await page.getByRole('button', { name: 'Skip tips' }).click()
     await expect(tip).toBeHidden()
-    await page.getByRole('button', { name: 'Tips off' }).click()
-    await expect(tip).toBeVisible()
+    await page.getByRole('button', { name: 'Account' }).click()
+    await page.getByRole('button', { name: /^Tips/ }).click()
+    await page.keyboard.press('Escape')
     await page.reload()
-    await expect(page.getByTestId('coach-tip')).toContainText('Start here')
+    await expect(page.getByTestId('coach-tip')).toContainText('Tap Pause')
     expect(errors).toEqual([])
   })
 

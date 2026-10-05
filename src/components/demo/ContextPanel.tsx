@@ -6,7 +6,6 @@ import { Chip } from '../shell/ui'
 
 /** Which pipeline stages are doing work on each screen. */
 const ACTIVE: Record<Step, number[]> = {
-  landing: [0],
   sip_detail: [0],
   reason: [2],
   fear: [1, 3],
