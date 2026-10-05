@@ -4,6 +4,7 @@ export const riya: Profile = {
   id: 'riya',
   name: 'Riya Sharma',
   firstName: 'Riya',
+  photo: '/avatars/riya.jpg',
   age: 27,
   city: 'Pune',
   occupation: 'Software Tester',

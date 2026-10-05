@@ -4,6 +4,7 @@ export interface Profile {
   id: UserId
   name: string
   firstName: string
+  photo: string
   age: number
   city: string
   occupation: string

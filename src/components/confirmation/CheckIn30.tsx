@@ -11,7 +11,7 @@ export function CheckIn30({ flow }: { flow: Flow }) {
     <>
       <div className="px-5 pb-6 pt-8">
         <p className="text-xs font-semibold text-fog">{copy.checkin.preview}</p>
-        <Card className="mt-3 overflow-hidden">
+        <Card coach="checkin-card" className="mt-3 overflow-hidden">
           <div className="p-5">
             <h1 className="text-2xl font-bold text-paper">{o.checkin.title}</h1>
             <p className="mt-3 text-[17px] leading-snug text-mist">{o.checkin.body}</p>

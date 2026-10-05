@@ -35,7 +35,7 @@ export function Confirmation({ flow }: { flow: Flow }) {
           </p>
         </div>
 
-        <Card className="mt-6 w-full bg-white/[0.03] p-4 text-left">
+        <Card coach="checkin-card" className="mt-6 w-full bg-white/[0.03] p-4 text-left">
           <p className="text-sm font-bold text-paper">{copy.confirm.checkinTitle}</p>
           <p className="mt-0.5 text-sm text-mist">{copy.confirm.checkinBody}</p>
         </Card>
@@ -43,7 +43,7 @@ export function Confirmation({ flow }: { flow: Flow }) {
       <Footer>
         <div className="grid grid-cols-2 gap-3">
           <Button onClick={() => actions.goto('sip_detail')}>{copy.confirm.done}</Button>
-          <Button variant="outline" onClick={actions.openCheckin}>
+          <Button data-coach="confirm-preview" variant="outline" onClick={actions.openCheckin}>
             {copy.confirm.preview}
           </Button>
         </div>

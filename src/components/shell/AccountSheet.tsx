@@ -24,9 +24,7 @@ export function AccountSheet({ flow, tour }: { flow: Flow; tour: Tour }) {
               onClick={() => (on ? actions.closeSheet() : actions.start(u.id))}
               className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left transition-colors ${on ? 'border-mist bg-white/10' : 'border-graphite hover:bg-white/5'}`}
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/10 text-sm font-semibold text-paper" aria-hidden="true">
-                {u.firstName[0]}
-              </span>
+              <img src={u.photo} alt="" className="size-10 shrink-0 rounded-full object-cover ring-1 ring-smoke" />
               <span className="min-w-0 flex-1">
                 <span className="block text-[15px] font-semibold text-paper">{u.name}</span>
                 <span className="block text-sm text-fog">

@@ -270,28 +270,40 @@ test('responsive layout screenshots', async ({ page }, info) => {
 })
 
 test.describe('guided tips', () => {
-  test('appear on load, point at the next click, and reset on refresh', async ({ page }) => {
+  test('show up to two at a time, advance as dismissed, and reset on refresh', async ({ page }, info) => {
     const errors = watchErrors(page)
+    const wide = info.project.name === 'desktop'
     await page.goto('/')
-    const tip = page.getByTestId('coach-tip')
-    await expect(tip).toContainText('Tap Pause')
-    await page.screenshot({ path: `test-results/tip-sip-${test.info().project.name}.png` })
+    const tips = page.getByTestId('coach-tip')
+    await expect(tips.first()).toContainText('Tap Pause')
+    await expect(tips).toHaveCount(wide ? 2 : 1)
+    if (wide) await expect(tips.nth(1)).toContainText('Your SIP at a glance')
+    await page.screenshot({ path: `test-results/tip-sip-${info.project.name}.png` })
+
+    // dismiss everything on this screen, one batch at a time; never more than two visible
+    for (let i = 0; i < 4; i++) {
+      const n = await tips.count()
+      expect(n).toBeLessThanOrEqual(2)
+      if (!n) break
+      await tips.first().getByRole('button', { name: 'Got it' }).click()
+    }
+    await expect(tips).toHaveCount(0)
+
     await page.getByRole('button', { name: 'Pause', exact: true }).click()
-    await expect(tip).toContainText('Pick a reason')
-    await page.getByRole('button', { name: /Market is falling/ }).click()
-    await expect(tip).toContainText('What a pause changes')
-    await page.screenshot({ path: `test-results/tip-fear-${test.info().project.name}.png` })
-    await page.getByRole('button', { name: 'Next' }).click()
-    await expect(tip).toContainText('Where the numbers come from')
-    await page.getByRole('button', { name: 'Next' }).click()
-    await expect(tip).toContainText('Still your call')
-    await page.getByRole('button', { name: 'Skip tips' }).click()
-    await expect(tip).toBeHidden()
+    await expect(tips.first()).toContainText('Market is falling')
+    await expect(tips).toHaveCount(wide ? 2 : 1)
+    await page.getByRole('button', { name: /^Market is falling/ }).click()
+    await expect(tips.first()).toContainText('What a pause changes')
+    await expect(tips.count()).resolves.toBeLessThanOrEqual(2)
+    await page.screenshot({ path: `test-results/tip-fear-${info.project.name}.png` })
+
+    await tips.first().getByRole('button', { name: 'Skip tips' }).click()
+    await expect(tips).toHaveCount(0)
     await page.getByRole('button', { name: 'Account' }).click()
     await page.getByRole('button', { name: /^Tips/ }).click()
     await page.keyboard.press('Escape')
     await page.reload()
-    await expect(page.getByTestId('coach-tip')).toContainText('Tap Pause')
+    await expect(tips.first()).toContainText('Tap Pause')
     expect(errors).toEqual([])
   })
 

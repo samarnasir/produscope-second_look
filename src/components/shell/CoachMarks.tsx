@@ -1,124 +1,179 @@
-import { useEffect, useLayoutEffect, useState, type RefObject } from 'react'
+import { useEffect, useState, type RefObject } from 'react'
 import { copy } from '../../content/copy'
 import { tourKey, type Tour } from '../../state/tour'
 import type { Flow } from '../../state/flow'
 
-interface Box { left: number; top: number; width: number; height: number }
+interface Rect { left: number; top: number; width: number; height: number }
+interface Measure { wide: boolean; frame: Rect; rects: Record<string, Rect> }
 
-/** Position of a [data-coach] element relative to the phone frame. Re-measured while sheets animate. */
-function useTargetBox(target: string | null, frame: RefObject<HTMLElement | null>, deps: unknown[]) {
-  const [box, setBox] = useState<(Box & { fw: number; fh: number }) | null>(null)
-  useLayoutEffect(() => {
-    const f = frame.current
-    if (!f || !target) {
-      setBox(null)
-      return
-    }
-    let raf = 0
-    const t0 = performance.now()
-    const measure = () => {
-      const el = f.querySelector<HTMLElement>(`[data-coach="${target}"]`)
-      if (!el) return setBox((b) => (b ? null : b))
-      const fr = f.getBoundingClientRect()
-      const r = el.getBoundingClientRect()
-      const next = {
-        left: r.left - fr.left - f.clientLeft,
-        top: r.top - fr.top - f.clientTop,
-        width: r.width,
-        height: r.height,
-        fw: f.clientWidth,
-        fh: f.clientHeight,
-      }
-      setBox((b) => (b && Object.keys(next).every((k) => Math.abs((b as never)[k] - (next as never)[k]) < 0.5) ? b : next))
-    }
-    const loop = () => {
-      measure()
-      if (performance.now() - t0 < 700) raf = requestAnimationFrame(loop)
-    }
-    loop()
-    window.addEventListener('resize', measure)
-    window.addEventListener('scroll', measure, true)
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', measure)
-      window.removeEventListener('scroll', measure, true)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [target, frame, ...deps])
-  return box
-}
-
-const TIP_H = 170
+const TIP_W = 264
+const GAP = 28
+const SIDE_NEED = TIP_W + GAP + 8
 const FOOTER_H = 90
-function fitsBelow(b: Box & { fh: number }) {
-  const spaceBelow = b.fh - FOOTER_H - (b.top + b.height)
-  const spaceAbove = b.top - 56
-  return spaceBelow >= TIP_H || spaceAbove < TIP_H
-}
+const TIP_H = 170
 
+const plain = (r: DOMRect): Rect => ({ left: r.left, top: r.top, width: r.width, height: r.height })
+const same = (a: Measure | null, b: Measure) => !!a && JSON.stringify(a) === JSON.stringify(b)
+
+/**
+ * Coach marks live outside the phone so they can spill beside it on desktop.
+ * At most two show at once (one per side); on small screens one shows inside the viewport.
+ */
 export function CoachMarks({ flow, tour, frame }: { flow: Flow; tour: Tour; frame: RefObject<HTMLElement | null> }) {
+  const key = tourKey(flow.state)
+  const tips = (key && copy.tour.tips[key]) || []
+  const unseen = tour.on ? tips.filter((t) => !tour.seen.has(`${key}:${t.target}`)) : []
+  const sig = unseen.map((t) => t.target).join('|')
+
   const [mounted, setMounted] = useState(false)
+  const [m, setM] = useState<Measure | null>(null)
+
   useEffect(() => {
     const t = window.setTimeout(() => setMounted(true), 500)
     return () => window.clearTimeout(t)
   }, [])
 
-  const key = tourKey(flow.state)
-  const tips = (key && copy.tour.tips[key]) || []
-  const idx = tips.findIndex((_, i) => !tour.seen.has(`${key}:${i}`))
-  const tip = tour.on && idx >= 0 ? tips[idx] : null
-  const box = useTargetBox(tip?.target ?? null, frame, [key, idx, mounted])
+  useEffect(() => {
+    const f = frame.current
+    if (!mounted || !f || !sig) {
+      setM(null)
+      return
+    }
+    const targets = sig.split('|')
+    const measure = () => {
+      const fr = f.getBoundingClientRect()
+      const rects: Record<string, Rect> = {}
+      for (const t of targets) {
+        const el = document.querySelector<HTMLElement>(`[data-coach="${t}"]`)
+        if (!el) continue
+        const r = el.getBoundingClientRect()
+        const cy = r.top + r.height / 2
+        const inFrame = window.innerWidth >= 1024 ? cy > fr.top + 56 && cy < fr.bottom - 24 : cy > 56 && cy < window.innerHeight - 24
+        if (inFrame && r.width > 0) rects[t] = plain(r)
+      }
+      const next: Measure = { wide: window.innerWidth >= 1024, frame: plain(fr), rects }
+      setM((prev) => (same(prev, next) ? prev : next))
+    }
+    measure()
+    const id = window.setInterval(measure, 250)
+    window.addEventListener('resize', measure)
+    window.addEventListener('scroll', measure, true)
+    return () => {
+      window.clearInterval(id)
+      window.removeEventListener('resize', measure)
+      window.removeEventListener('scroll', measure, true)
+    }
+  }, [mounted, sig, frame])
 
-  if (!tip || !box || !mounted) return null
+  if (!m) return null
+  const candidates = unseen.filter((t) => m.rects[t.target])
+  if (!candidates.length) return null
 
-  const W = Math.min(268, box.fw - 24)
-  const left = Math.max(12, Math.min(box.left + box.width / 2 - W / 2, box.fw - W - 12))
-  // Keep ~90px clear for the sticky footer; prefer below, fall back to above.
-  const below = fitsBelow(box)
-  const arrowX = Math.max(18, Math.min(box.left + box.width / 2 - left, W - 18))
-  const last = idx === tips.length - 1
-  const pos = below ? { top: box.top + box.height + 12 } : { bottom: box.fh - box.top + 12 }
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const sides = (['right', 'left'] as const).filter((s) => (s === 'right' ? vw - (m.frame.left + m.frame.width) : m.frame.left) >= SIDE_NEED)
+  let shown = m.wide && sides.length ? candidates.slice(0, sides.length) : candidates.slice(0, 1)
+  // Each tip goes on the side nearest its target so connectors never cross other controls.
+  const cx = (t: (typeof shown)[number]) => m.rects[t.target].left + m.rects[t.target].width / 2
+  let assign: ('left' | 'right')[] = []
+  if (m.wide && sides.length) {
+    if (shown.length === 2) {
+      shown = [...shown].sort((a, b) => cx(a) - cx(b))
+      assign = ['left', 'right']
+    } else {
+      const mid = m.frame.left + m.frame.width / 2
+      assign = [cx(shown[0]) < mid && sides.includes('left') ? 'left' : sides.includes('right') ? 'right' : 'left']
+    }
+  }
+
+  const card = (t: (typeof shown)[number], style: React.CSSProperties, arrow?: React.ReactNode) => (
+    <div
+      key={t.target}
+      role="status"
+      data-testid="coach-tip"
+      className="pointer-events-auto fixed animate-rise rounded-xl border border-smoke bg-obsidian p-3.5 shadow-xl"
+      style={{ width: m.wide ? TIP_W : Math.min(268, vw - 24), ...style }}
+    >
+      {arrow}
+      <p className="text-sm font-semibold text-paper">{t.title}</p>
+      <p className="mt-1 text-[13px] leading-snug text-mist">{t.body}</p>
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <button type="button" onClick={tour.skip} className="min-h-8 rounded px-1 text-xs text-fog hover:text-mist">
+          {copy.tour.skip}
+        </button>
+        <button
+          type="button"
+          onClick={() => tour.dismiss(`${key}:${t.target}`)}
+          className="min-h-8 rounded-full bg-paper px-3.5 text-[13px] font-semibold text-void hover:bg-bone"
+        >
+          {copy.tour.gotIt}
+        </button>
+      </div>
+    </div>
+  )
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[60]" aria-live="polite">
-      <div
-        className="absolute animate-pulse rounded-md ring-2 ring-mist"
-        style={{ left: box.left - 3, top: box.top - 3, width: box.width + 6, height: box.height + 6 }}
-        aria-hidden="true"
-      />
-      <div
-        role="status"
-        data-testid="coach-tip"
-        className="pointer-events-auto absolute animate-rise rounded-xl border border-smoke bg-obsidian p-3.5 shadow-xl"
-        style={{ left, width: W, ...pos }}
-      >
-        <span
-          className={`absolute size-3 rotate-45 border-smoke bg-obsidian ${below ? '-top-1.5 border-l border-t' : '-bottom-1.5 border-b border-r'}`}
-          style={{ left: arrowX - 6 }}
-          aria-hidden="true"
-        />
-        <p className="text-sm font-semibold text-paper">{tip.title}</p>
-        <p className="mt-1 text-[13px] leading-snug text-mist">{tip.body}</p>
-        <div className="mt-3 flex items-center justify-between gap-2">
-          <button type="button" onClick={tour.skip} className="min-h-8 rounded px-1 text-xs text-fog hover:text-mist">
-            {copy.tour.skip}
-          </button>
-          <div className="flex items-center gap-2.5">
-            {tips.length > 1 && (
-              <span className="font-mono text-xs text-ash">
-                {idx + 1}/{tips.length}
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={() => tour.dismiss(`${key}:${idx}`)}
-              className="min-h-8 rounded-full bg-paper px-3.5 text-[13px] font-semibold text-void hover:bg-bone"
-            >
-              {last ? copy.tour.gotIt : copy.tour.next}
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="pointer-events-none fixed inset-0 z-[80]" aria-live="polite">
+      {shown.map((t) => {
+        const r = m.rects[t.target]
+        return (
+          <div
+            key={`ring-${t.target}`}
+            className="fixed animate-pulse rounded-md ring-2 ring-mist"
+            style={{ left: r.left - 3, top: r.top - 3, width: r.width + 6, height: r.height + 6 }}
+            aria-hidden="true"
+          />
+        )
+      })}
+
+      {m.wide && sides.length ? (
+        <>
+          <svg className="fixed inset-0 size-full" aria-hidden="true">
+            {shown.map((t, i) => {
+              const r = m.rects[t.target]
+              const side = assign[i]
+              const cy = r.top + r.height / 2
+              const ty = Math.max(100, Math.min(cy, vh - 100))
+              const x1 = side === 'right' ? m.frame.left + m.frame.width + GAP : m.frame.left - GAP
+              const x2 = side === 'right' ? r.left + r.width - 2 : r.left + 2
+              return (
+                <g key={t.target} stroke="#8a8f98" strokeWidth="1">
+                  <line x1={x1} y1={ty} x2={x2} y2={cy} strokeDasharray="3 3" />
+                  <circle cx={x2} cy={cy} r="3" fill="#8a8f98" />
+                </g>
+              )
+            })}
+          </svg>
+          {shown.map((t, i) => {
+            const r = m.rects[t.target]
+            const side = assign[i]
+            const cy = r.top + r.height / 2
+            const ty = Math.max(100, Math.min(cy, vh - 100))
+            return card(t, {
+              top: ty,
+              transform: 'translateY(-50%)',
+              left: side === 'right' ? m.frame.left + m.frame.width + GAP : m.frame.left - GAP - TIP_W,
+            })
+          })}
+        </>
+      ) : (
+        shown.map((t) => {
+          const r = m.rects[t.target]
+          const W = Math.min(268, vw - 24)
+          const left = Math.max(12, Math.min(r.left + r.width / 2 - W / 2, vw - W - 12))
+          const below = vh - FOOTER_H - (r.top + r.height) >= TIP_H || r.top - 56 < TIP_H
+          const arrowX = Math.max(18, Math.min(r.left + r.width / 2 - left, W - 18))
+          return card(
+            t,
+            { left, ...(below ? { top: r.top + r.height + 12 } : { bottom: vh - r.top + 12 }) },
+            <span
+              className={`absolute size-3 rotate-45 border-smoke bg-obsidian ${below ? '-top-1.5 border-l border-t' : '-bottom-1.5 border-b border-r'}`}
+              style={{ left: arrowX - 6 }}
+              aria-hidden="true"
+            />,
+          )
+        })
+      )}
     </div>
   )
 }

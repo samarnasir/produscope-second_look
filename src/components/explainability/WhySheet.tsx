@@ -33,7 +33,7 @@ export function WhySheet({ flow, focus }: { flow: Flow; focus: NumberId }) {
         </div>
       }
     >
-      <p className="rounded-xl bg-white/5 p-3.5 text-[15px] leading-snug text-paper" data-testid="plain-words">
+      <p data-coach="why-plain" className="rounded-xl bg-white/5 p-3.5 text-[15px] leading-snug text-paper" data-testid="plain-words">
         {sentence}
       </p>
       <p className="mt-2 text-xs text-fog">{copy.why.engineNote}</p>
@@ -57,7 +57,7 @@ export function WhySheet({ flow, focus }: { flow: Flow; focus: NumberId }) {
         </div>
       </dl>
 
-      <h3 className="mt-6 text-sm font-bold text-paper">{copy.why.how}</h3>
+      <h3 data-coach="why-how" className="mt-6 w-fit text-sm font-bold text-paper">{copy.why.how}</h3>
       <ul className="mt-2 space-y-2">
         {sources.map((s) => {
           const on = focused(s.id)

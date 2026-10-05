@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from 'react'
 import { CoachMarks } from './CoachMarks'
+import { Logo } from './Logo'
 import type { Tour } from '../../state/tour'
 import { ContextPanel } from '../demo/ContextPanel'
 import type { Flow } from '../../state/flow'
@@ -34,25 +35,24 @@ export function AppShell({ flow, tour, children }: { flow: Flow; tour: Tour; chi
             <div className="hidden h-7 shrink-0 lg:block" aria-hidden="true" />
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-graphite px-5">
               <div className="flex items-center gap-2">
-                <span className="grid size-6 place-items-center rounded-md bg-paper text-xs font-bold text-void" aria-hidden="true">
-                  2
-                </span>
+                <Logo />
                 <span className="text-[15px] font-bold tracking-tight text-paper">{copy.brand}</span>
               </div>
               <button
                 type="button"
                 onClick={() => flow.actions.openSheet('account')}
                 aria-label={copy.account.title}
-                className="grid size-9 place-items-center rounded-full bg-white/10 text-sm font-semibold text-paper hover:bg-white/15"
+                data-coach="avatar"
+                className="size-9 overflow-hidden rounded-full ring-1 ring-smoke hover:ring-fog"
               >
-                {profile.firstName[0]}
+                <img src={profile.photo} alt="" className="size-full object-cover" />
               </button>
             </header>
             <main className="flex flex-1 flex-col">{children}</main>
           </div>
-          <CoachMarks flow={flow} tour={tour} frame={frame} />
         </div>
       </div>
+      <CoachMarks flow={flow} tour={tour} frame={frame} />
     </div>
   )
 }

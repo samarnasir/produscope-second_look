@@ -42,7 +42,7 @@ export function ReasonPicker({ flow }: { flow: Flow }) {
               key={o.reason}
               type="button"
               aria-pressed={on}
-              data-coach={o.prominent ? 'reason-market' : undefined}
+              data-coach={`reason-${o.reason}`}
               onClick={() => choose(o)}
               className={[
                 'flex w-full items-center justify-between gap-3 rounded-xl border px-4 text-left transition-colors',

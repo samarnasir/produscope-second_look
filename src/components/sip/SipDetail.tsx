@@ -12,14 +12,16 @@ export function SipDetail({ flow }: { flow: Flow }) {
   return (
     <>
       <div className="px-5 pb-6 pt-5">
+        <div data-coach="portfolio" className="w-fit">
         <p className="text-sm text-fog">Portfolio value</p>
         <p className="mt-0.5 flex items-baseline gap-2 text-[28px] font-semibold leading-none text-paper">
           {inrLakh(p.value)}
           <Chip>{perf > 0 ? '+' : '−'}{Math.abs(perf)}%</Chip>
         </p>
+        </div>
         <h1 className="mt-7 text-lg font-semibold text-paper">{copy.sip.title}</h1>
 
-        <Card className="mt-3 overflow-hidden">
+        <Card coach="sip-card" className="mt-3 overflow-hidden">
           <div className="p-5">
             <div className="flex items-start justify-between gap-3">
               <div>

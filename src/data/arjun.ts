@@ -5,6 +5,7 @@ export const arjun: Profile = {
   id: 'arjun',
   name: 'Arjun Mehta',
   firstName: 'Arjun',
+  photo: '/avatars/arjun.jpg',
   age: 34,
   city: 'Indore',
   occupation: 'Sales Manager',

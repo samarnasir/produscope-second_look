@@ -59,13 +59,13 @@ export function FearCard({ flow }: { flow: Flow }) {
             <p className="text-xs text-fog">{copy.fear.barCaption}</p>
           </Section>
 
-          <Section label={copy.fear.price} id="price_today" info={actions.openWhy}>
+          <Section label={copy.fear.price} id="price_today" info={actions.openWhy} coach="price-card">
             <p className="text-[17px] font-semibold leading-snug text-paper">
               {copy.fear.priceLine(n.unitsMorePct, inr(p.sip.amount))}
             </p>
           </Section>
 
-          <Section label={copy.fear.past} id="past_falls" info={actions.openWhy}>
+          <Section label={copy.fear.past} id="past_falls" info={actions.openWhy} coach="past-card">
             <p className="text-[15px] text-mist">{copy.fear.pastLine}</p>
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-md bg-white/5 p-3">
@@ -93,7 +93,7 @@ export function FearCard({ flow }: { flow: Flow }) {
 
       <Footer>
         <div className="grid grid-cols-2 gap-3">
-          <Button onClick={() => actions.goto('decision')}>{copy.fear.options}</Button>
+          <Button data-coach="options" onClick={() => actions.goto('decision')}>{copy.fear.options}</Button>
           <Button data-coach="pause-anyway" variant="outline" onClick={() => actions.decide('pause_anyway')}>
             {copy.fear.pauseAnyway}
           </Button>

@@ -7,9 +7,10 @@ import { Sheet } from '../shell/Sheet'
 
 const DAYS = [15, 20, 25, 28]
 
-function Row({ title, sub, onClick }: { title: string; sub: string; onClick: () => void }) {
+function Row({ title, sub, onClick, coach }: { title: string; sub: string; onClick: () => void; coach: string }) {
   return (
     <button
+      data-coach={coach}
       type="button"
       onClick={onClick}
       className="flex min-h-[64px] w-full items-center justify-between gap-3 rounded-xl border border-graphite bg-carbon px-4 py-3 text-left transition-colors hover:border-fog hover:bg-white/5"
@@ -71,10 +72,10 @@ export function CashCard({ flow }: { flow: Flow }) {
 
         <p className="mb-2 mt-6 text-[11px] font-bold tracking-[0.12em] text-mist">OR KEEP YOUR SIP AND FREE UP CASH</p>
         <div className="space-y-2.5">
-          <Row title={c.skip} sub={c.skipSub(p.sip.nextLabel, p.sip.resume1mLabel)} onClick={() => actions.decide('skip_1')} />
-          <Row title={c.reduce} sub={c.reduceSub} onClick={() => actions.openSheet('reduce')} />
-          <Row title={c.move} sub={c.moveSub} onClick={() => actions.openSheet('move_date')} />
-          <Row title={c.emergency} sub={c.emergencySub} onClick={() => actions.openSheet('emergency')} />
+          <Row title={c.skip} sub={c.skipSub(p.sip.nextLabel, p.sip.resume1mLabel)} coach="cash-skip" onClick={() => actions.decide('skip_1')} />
+          <Row title={c.reduce} sub={c.reduceSub} coach="cash-reduce" onClick={() => actions.openSheet('reduce')} />
+          <Row title={c.move} sub={c.moveSub} coach="cash-move" onClick={() => actions.openSheet('move_date')} />
+          <Row title={c.emergency} sub={c.emergencySub} coach="cash-emergency" onClick={() => actions.openSheet('emergency')} />
         </div>
         <p className="mt-5 text-center text-xs text-fog">{copy.disclaimer}</p>
       </div>

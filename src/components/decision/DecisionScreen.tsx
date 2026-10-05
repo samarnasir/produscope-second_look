@@ -33,6 +33,7 @@ export function DecisionScreen({ flow }: { flow: Flow }) {
           {items.map((i) => (
             <button
               key={i.choice}
+              data-coach={`choice-${i.choice}`}
               type="button"
               onClick={() => actions.decide(i.choice)}
               className="flex min-h-[72px] w-full flex-col justify-center rounded-xl border border-smoke bg-carbon px-4 py-3 text-left transition-colors hover:bg-white/5"
