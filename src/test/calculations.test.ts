@@ -10,12 +10,12 @@ describe('engine: Riya, 6-month pause', () => {
 
   it('contributions not invested', () => expect(n.missed).toBe(30000))
   it('projected values at goal date', () => {
-    expect(Math.round(n.valueKeep)).toBe(561671)
-    expect(Math.round(n.valuePause)).toBe(515123)
+    expect(Math.round(n.valueKeep)).toBe(601994)
+    expect(Math.round(n.valuePause)).toBe(553798)
   })
-  it('goal impact rounds to ₹47,000', () => {
-    expect(Math.round(n.impactRaw)).toBe(46548)
-    expect(n.impact).toBe(47000)
+  it('goal impact rounds to ₹48,000', () => {
+    expect(Math.round(n.impactRaw)).toBe(48196)
+    expect(n.impact).toBe(48000)
   })
   it('goal is reached about 5 months later', () => {
     expect(n.monthsToGoalKeep).toBe(57)

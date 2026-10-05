@@ -62,7 +62,7 @@ describe('advice guardrail', () => {
     const n = computeImpact(riya)
     const out = explain({ profile: riya, numbers: n, reason: 'market_falling' }, () => 'You should keep investing.')
     expect(passesGuardrail(out)).toBe(true)
-    expect(out).toContain('₹47,000')
+    expect(out).toContain('₹48,000')
   })
 
   it('falls back when the generator throws', () => {
@@ -74,6 +74,6 @@ describe('advice guardrail', () => {
 
   it('template output matches the deck wording', () => {
     const out = templateGenerator({ profile: riya, numbers: computeImpact(riya), reason: 'market_falling' })
-    expect(out).toBe('Pausing could leave your home goal about ₹47,000 short and push it roughly 5 months later.')
+    expect(out).toBe('Pausing could leave your home goal about ₹48,000 short and push it roughly 5 months later.')
   })
 })

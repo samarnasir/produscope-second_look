@@ -24,19 +24,19 @@ This doc records decisions already made. Do not re-open them while implementing.
 Inputs (`src/data/riya.ts`):
 - Corpus today ₹1,41,000; invested ₹1,55,000 (shown as −9%).
 - SIP ₹5,000, instalment at the **start** of each month, on the 10th.
-- 53 months from Oct 2026 to Mar 2031.
+- 57 months from Oct 2026 to Jul 2031.
 - Annual return 11%, so monthly rate `r = 1.11^(1/12) − 1` (≈ 0.8735%).
 - Pause = the next 6 instalments (Oct 2026 to Mar 2027 skipped; the SIP resumes 10 Apr 2027).
-- Goal ₹6,00,000 by Mar 2031.
+- Goal ₹6,00,000 by Jul 2031.
 
 Formula: for each month m from 0 to 52, add the instalment (unless m < 6 in the pause scenario), then multiply by (1 + r).
 
 | Output | Engine value | Displayed |
 |---|---|---|
 | contributionsMissed | 30,000 | ₹30,000 |
-| valueAtGoalDate keep | 5,61,671 | (explain sheet only) |
-| valueAtGoalDate pause | 5,15,123 | (explain sheet only) |
-| goalImpact | 46,548 | **₹47,000** (round to nearest ₹1,000) |
+| valueAtGoalDate keep | 6,01,994 | (explain sheet only) |
+| valueAtGoalDate pause | 5,53,798 | (explain sheet only) |
+| goalImpact | 48,196 | **₹48,000** (round to nearest ₹1,000) |
 | monthsTo₹6L keep / pause | 57 / 62 | **~5 months later** |
 | bar pause ÷ keep | 91.7% | **Keep going 100% / Pause 6 months 92%** |
 | goal progress | 1.41 ÷ 6 = 23.5% | 24% |
@@ -105,13 +105,13 @@ Transitions:
 
 The phone column is `max-w-[420px]`, centred. Sticky action footers sit on mobile. Body text is at least 15px. Tap targets are at least 48px tall.
 
-**Landing.** Eyebrow "SECOND LOOK". The line "Riya's portfolio is down 9%." Below it, "She is considering pausing her ₹5,000 monthly SIP." Mini facts: Pune · 27 · Software Tester · goal ₹6 lakh home by Mar 2031. Primary button "Try the Second Look". Secondary card (P2): "Arjun, 34 · needs ₹40,000 for a medical bill. Same button, different need."
+**Landing.** Eyebrow "SECOND LOOK". The line "Riya's portfolio is down 9%." Below it, "She is considering pausing her ₹5,000 monthly SIP." Mini facts: Pune · 27 · Software Tester · goal ₹6 lakh home by Jul 2031. Primary button "Try the Second Look". Secondary card (P2): "Arjun, 34 · needs ₹40,000 for a medical bill. Same button, different need."
 
 **SIP detail.** Header "My SIPs". The card shows:
 - Flexi-cap fund · ₹5,000 / month
 - Since Mar 2024 · next instalment 10 Oct
 - Invested ₹1.55 lakh · Value ₹1.41 lakh · **−9%** (orange chip)
-- Goal progress bar 24% → ₹6 lakh home, Mar 2031
+- Goal progress bar 24% → ₹6 lakh home, Jul 2031
 
 Buttons: **Pause** (primary blue, full width) and Stop (secondary outline). Stop opens StopSheet: "Stop isn't part of this prototype. Second Look's MVP covers Pause." with a Close button.
 
@@ -121,14 +121,14 @@ Buttons: **Pause** (primary blue, full width) and Stop (secondary outline). Stop
 - **Just pause**
 - **Fund isn't performing** with a `V2` badge, greyed (still focusable). It opens V2Sheet: "Coming in V2. Future version: Compare 3y and 5y rolling returns vs category median, expense ratio, fund overlap and alternative SIP routing." with a "Back to reasons" button. This path must never imply the feature is shipped.
 
-**Fear card ("Before you pause").** A chip at the top: "Based on your goal · ₹6 lakh home, Mar 2031".
+**Fear card ("Before you pause").** A chip at the top: "Based on your goal · ₹6 lakh home, Jul 2031".
 - GOAL IMPACT:
   - "Pausing 6 months = ₹30,000 not invested."
-  - "Your home goal: ₹47,000 less by Mar 2031, reached about 5 months later."
-  - GoalBars: "Keep going 100%" (blue) vs "Pause 6 months 92%" (blue-tint). Caption "Projected value at Mar 2031, relative to keeping your SIP running."
+  - "Your home goal: ₹48,000 less by Jul 2031, reached about 5 months later."
+  - GoalBars: "Keep going 100%" (blue) vs "Pause 6 months 92%" (blue-tint). Caption "Projected value at Jul 2031, relative to keeping your SIP running."
 - PRICE TODAY: "At today's prices, ₹5,000 buys 14% more units than in July."
 - PAST FALLS: "Flexi-cap funds have experienced similar drawdowns before." Then "Median recovery: ~8 months" and "Slowest recovery: ~18 months". Small text: "Illustrative historical range; varies by drawdown and fund."
-- Plain-language line from `explain()`: "Pausing could leave your home goal about ₹47,000 short and push it roughly 5 months later."
+- Plain-language line from `explain()`: "Pausing could leave your home goal about ₹48,000 short and push it roughly 5 months later."
 - Each number gets a small ⓘ that opens WhySheet focused on it. Below the sections, a full-width tertiary button "Why am I seeing this?".
 - Sticky footer, two equal-width buttons: **See my options** (primary) and **Pause anyway** (outline, same size, same weight).
 
@@ -226,8 +226,8 @@ The test scans every string exported from `content/copy.ts` and every `explain()
 |---|---|---|
 | 10 | "reached about 3 months later" | "reached about 5 months later" |
 | 10 | Pause 6 months **95%** | **92%** |
-| 11 | Goal + horizon "₹47,000 less, 3 months later" | "₹47,000 less, ~5 months later" |
-| 11 | Engine "Pause 6 months: ₹47,000 less, ~3 months late" | "~5 months late" |
+| 11 | Goal + horizon "₹48,000 less, 3 months later" | "₹48,000 less, ~5 months later" |
+| 11 | Engine "Pause 6 months: ₹48,000 less, ~3 months late" | "~5 months late" |
 
 Also point the QR codes on slides 1, 10 and 15 at the Vercel production URL.
 

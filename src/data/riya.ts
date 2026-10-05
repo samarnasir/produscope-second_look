@@ -23,9 +23,9 @@ export const riya: Profile = {
   invested: 155000,
   value: 141000,
   performancePct: -9,
-  goal: { name: 'home goal', short: '₹6 lakh home down payment', amount: 600000, dateLabel: 'Mar 2031' },
-  /** 53 monthly instalments from 10 Oct 2026, valued on 10 Mar 2031. */
-  horizonMonths: 53,
+  goal: { name: 'home goal', short: '₹6 lakh home down payment', amount: 600000, dateLabel: 'Jul 2031' },
+  /** 57 monthly instalments from 10 Oct 2026, valued on 10 Jul 2031. */
+  horizonMonths: 57,
   behaviour: { firstDrawdown: true, lateRestarts: 0 },
   persona: {
     says: 'Everyone online says the market will crash further.',

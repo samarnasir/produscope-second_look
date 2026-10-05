@@ -35,7 +35,7 @@ test.describe('Riya: market is falling', () => {
 
     await expect(page.getByRole('heading', { name: 'Before you pause' })).toBeVisible()
     await expect(page.getByText('Pausing 6 months = ₹30,000 not invested.')).toBeVisible()
-    await expect(page.getByText(/₹47,000 less/)).toBeVisible()
+    await expect(page.getByText(/₹48,000 less/)).toBeVisible()
     await expect(page.getByText(/reached about 5 months later/)).toBeVisible()
     await expect(page.getByText('Keep going')).toBeVisible()
     await expect(page.getByText('100%')).toBeVisible()
@@ -63,7 +63,7 @@ test.describe('Riya: market is falling', () => {
     await expect(dlg.getByText('1 Oct 2026').first()).toBeVisible()
     await expect(dlg.getByText('This is information, not investment advice.')).toBeVisible()
     await expect(dlg.getByTestId('plain-words')).toHaveText(
-      'Pausing could leave your home goal about ₹47,000 short and push it roughly 5 months later.',
+      'Pausing could leave your home goal about ₹48,000 short and push it roughly 5 months later.',
     )
     await dlg.getByRole('button', { name: 'Close', exact: true }).last().click()
     await expect(dlg).toBeHidden()
