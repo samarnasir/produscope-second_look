@@ -13,3 +13,7 @@ npm run e2e      # Playwright flow tests
 ```
 
 See `PLAN.md` for scope, numbers and screen spec.
+
+## Demo video
+
+`video/second-look-demo.mp4` (about 70 s) is recorded from the real app by `video/record.mjs` (Playwright). Captions and the cursor are injected into the recording only. Re-record with `npm run video`.

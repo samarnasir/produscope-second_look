@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "video": "npm run build && node video/record.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
