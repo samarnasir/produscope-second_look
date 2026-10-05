@@ -48,7 +48,7 @@ export function Landing({ flow }: { flow: Flow }) {
       </section>
 
       <Footer>
-        <Button className="w-full" onClick={() => flow.actions.start('riya')}>
+        <Button data-coach="start" className="w-full" onClick={() => flow.actions.start('riya')}>
           {copy.landing.cta}
         </Button>
       </Footer>

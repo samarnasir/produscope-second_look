@@ -38,7 +38,7 @@ export function WhySheet({ flow, focus }: { flow: Flow; focus: NumberId }) {
       </p>
       <p className="mt-2 text-xs text-fog">{copy.why.engineNote}</p>
 
-      <dl className="mt-5 space-y-3.5 text-[15px]">
+      <dl data-coach="why-assumptions" className="mt-5 space-y-3.5 text-[15px]">
         <div>
           <dt className="text-[11px] font-bold tracking-[0.12em] text-mist">{copy.why.data.toUpperCase()}</dt>
           <dd className="mt-0.5 text-mist">{DATA_LINE}</dd>

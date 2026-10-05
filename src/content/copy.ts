@@ -116,6 +116,41 @@ export const copy = {
     back: 'Back to SIP',
     restart: 'Start over',
   },
+  tour: {
+    skip: 'Skip tips',
+    next: 'Next',
+    gotIt: 'Got it',
+    toggleOn: 'Tips on',
+    toggleOff: 'Tips off',
+    tips: {
+      landing: [
+        { target: 'start', title: 'Start here', body: 'Follow Riya, 27, as her portfolio drops 9% and she thinks about pausing her SIP.' },
+      ],
+      sip_detail: [
+        { target: 'pause', title: 'The moment that matters', body: 'Every platform makes Pause one tap. Second Look steps in here, before the pause is final.' },
+      ],
+      reason: [
+        { target: 'reason-market', title: 'One tap says why', body: 'Different reasons get different help. Pick Market is falling to see the fear card.' },
+      ],
+      fear: [
+        { target: 'goal-card', title: 'Result: what pausing changes', body: 'A 6-month pause, shown against keeping the SIP running. The engine calculates every number; AI only explains it.' },
+        { target: 'why', title: 'Every number has a source', body: 'Tap to see the data, assumptions and update date behind each figure.' },
+        { target: 'pause-anyway', title: 'You stay in control', body: 'Pause anyway is always one tap. Second Look informs the decision; it never blocks it.' },
+      ],
+      why: [
+        { target: 'why-assumptions', title: 'Check the work', body: 'Data, assumptions and last update, plus how each figure was calculated.' },
+      ],
+      decision: [
+        { target: 'decision-list', title: 'Equal choices', body: 'Nothing is pre-selected, hidden or smaller. The investor decides.' },
+      ],
+      cash: [
+        { target: 'cash-pause', title: 'Cash first, no lecture', body: 'Pause stays the primary button. The options below free up cash without stopping the SIP.' },
+      ],
+      confirmed: [
+        { target: 'outcome', title: 'Result: choice saved', body: 'The decision is recorded and a day-30 check-in is queued. Tracked events show in the demo log (Demo info on phones).' },
+      ],
+    } as Record<string, { target: string; title: string; body: string }[]>,
+  },
   panel: {
     title: 'Demo info',
     persona: 'Why this investor pauses',

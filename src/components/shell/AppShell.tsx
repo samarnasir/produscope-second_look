@@ -1,10 +1,13 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
+import { CoachMarks } from './CoachMarks'
+import type { Tour } from '../../state/tour'
 import { ContextPanel } from '../demo/ContextPanel'
 import type { Flow } from '../../state/flow'
 import { copy } from '../../content/copy'
 
-export function AppShell({ flow, children }: { flow: Flow; children: ReactNode }) {
+export function AppShell({ flow, tour, children }: { flow: Flow; tour: Tour; children: ReactNode }) {
   const { state } = flow
+  const frame = useRef<HTMLDivElement>(null)
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[400px_1fr]">
       <aside className="hidden border-r border-graphite bg-carbon text-paper lg:block">
@@ -15,13 +18,14 @@ export function AppShell({ flow, children }: { flow: Flow; children: ReactNode }
       <div className="flex min-h-dvh justify-center bg-void lg:items-center lg:py-4">
         {/* Desktop: phone frame. The transform makes it the containing block for fixed-position sheets. */}
         <div
+          ref={frame}
           className="relative w-full max-w-[460px] lg:h-[min(820px,calc(100dvh-2rem))] lg:w-[390px] lg:max-w-none lg:overflow-hidden lg:rounded-[46px] lg:border-[10px] lg:border-obsidian lg:shadow-xl lg:ring-1 lg:ring-smoke lg:[transform:translateZ(0)]"
         >
           <div
             className="pointer-events-none absolute left-1/2 top-2 z-30 hidden h-5 w-24 -translate-x-1/2 rounded-full bg-void lg:block"
             aria-hidden="true"
           />
-          <div className="flex min-h-dvh flex-col bg-void lg:h-full lg:min-h-0 lg:overflow-y-auto">
+          <div className="flex min-h-dvh flex-col bg-void lg:h-full lg:min-h-0 lg:overflow-y-auto no-scrollbar">
             <div className="hidden h-7 shrink-0 lg:block" aria-hidden="true" />
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-graphite px-5">
               <div className="flex items-center gap-2">
@@ -30,12 +34,21 @@ export function AppShell({ flow, children }: { flow: Flow; children: ReactNode }
                 </span>
                 <span className="text-[15px] font-bold tracking-tight text-paper">{copy.brand}</span>
               </div>
+              <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => flow.actions.openSheet('demo')}
                 className="min-h-11 rounded-md px-2 text-sm font-medium text-mist hover:bg-white/5 lg:hidden"
               >
                 {copy.panel.title}
+              </button>
+              <button
+                type="button"
+                onClick={tour.toggle}
+                aria-pressed={tour.on}
+                className="min-h-11 rounded-md px-2 text-sm text-fog hover:bg-white/5 hover:text-mist"
+              >
+                {tour.on ? copy.tour.toggleOn : copy.tour.toggleOff}
               </button>
               {state.step !== 'landing' && (
                 <button
@@ -46,9 +59,11 @@ export function AppShell({ flow, children }: { flow: Flow; children: ReactNode }
                   {copy.sip.reset}
                 </button>
               )}
+              </div>
             </header>
             <main className="flex flex-1 flex-col">{children}</main>
           </div>
+          <CoachMarks flow={flow} tour={tour} frame={frame} />
         </div>
       </div>
     </div>

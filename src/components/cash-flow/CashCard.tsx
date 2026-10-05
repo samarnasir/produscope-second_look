@@ -64,7 +64,7 @@ export function CashCard({ flow }: { flow: Flow }) {
           <p className="text-[15px] leading-snug text-mist">{c.body}</p>
         </Card>
 
-        <Button className="mt-4 w-full" onClick={() => actions.decide('pause_anyway')}>
+        <Button data-coach="cash-pause" className="mt-4 w-full" onClick={() => actions.decide('pause_anyway')}>
           {c.pause}
         </Button>
         <p className="mt-1.5 text-center text-xs text-fog">{c.pauseNote}</p>

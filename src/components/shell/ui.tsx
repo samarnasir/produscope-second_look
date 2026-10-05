@@ -32,8 +32,8 @@ export function Chip({ children, tone = 'warn' }: { children: ReactNode; tone?: 
   )
 }
 
-export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`rounded-xl border border-graphite bg-carbon ${className}`}>{children}</div>
+export function Card({ children, className = '', coach }: { children: ReactNode; className?: string; coach?: string }) {
+  return <div data-coach={coach} className={`rounded-xl border border-graphite bg-carbon ${className}`}>{children}</div>
 }
 
 export function SectionLabel({ children }: { children: ReactNode }) {

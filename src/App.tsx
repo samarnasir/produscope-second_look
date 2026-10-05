@@ -1,4 +1,5 @@
 import { useFlow } from './state/flow'
+import { useTour } from './state/tour'
 import { AppShell } from './components/shell/AppShell'
 import { Landing } from './components/landing/Landing'
 import { SipDetail } from './components/sip/SipDetail'
@@ -15,10 +16,11 @@ import { copy } from './content/copy'
 
 export default function App() {
   const flow = useFlow()
+  const tour = useTour()
   const { state, actions } = flow
 
   return (
-    <AppShell flow={flow}>
+    <AppShell flow={flow} tour={tour}>
       {state.step === 'landing' && <Landing flow={flow} />}
       {(state.step === 'sip_detail' || state.step === 'reason') && <SipDetail flow={flow} />}
       {state.step === 'reason' && (state.sheet === 'v2' ? <V2Sheet flow={flow} /> : <ReasonPicker flow={flow} />)}

@@ -9,9 +9,9 @@ import { Footer } from '../shell/AppShell'
 import { BackButton, Button, Card, InfoButton, SectionLabel } from '../shell/ui'
 import { GoalBars } from './GoalBars'
 
-function Section({ label, id, info, children }: { label: string; id: NumberId; info: (id: NumberId) => void; children: React.ReactNode }) {
+function Section({ label, id, info, coach, children }: { label: string; id: NumberId; coach?: string; info: (id: NumberId) => void; children: React.ReactNode }) {
   return (
-    <Card className="p-4">
+    <Card className="p-4" coach={coach}>
       <div className="flex items-center justify-between">
         <SectionLabel>{label}</SectionLabel>
         <InfoButton label={`Why am I seeing this? ${label.toLowerCase()}`} onClick={() => info(id)} />
@@ -39,7 +39,7 @@ export function FearCard({ flow }: { flow: Flow }) {
         )}
 
         <div className="mt-4 space-y-3">
-          <Section label={copy.fear.goal} id="goal_impact" info={actions.openWhy}>
+          <Section label={copy.fear.goal} id="goal_impact" info={actions.openWhy} coach="goal-card">
             <p className="text-[17px] font-semibold leading-snug text-paper">
               Pausing {months(n.pauseMonths)} = {inr(n.missed)} not invested.
             </p>
@@ -85,7 +85,7 @@ export function FearCard({ flow }: { flow: Flow }) {
           </Section>
         </div>
 
-        <Button variant="outline" className="mt-4 w-full" onClick={() => actions.openWhy('all')}>
+        <Button data-coach="why" variant="outline" className="mt-4 w-full" onClick={() => actions.openWhy('all')}>
           {copy.fear.why}
         </Button>
         <p className="mt-4 text-center text-xs font-medium text-fog">{copy.disclaimer}</p>
@@ -94,7 +94,7 @@ export function FearCard({ flow }: { flow: Flow }) {
       <Footer>
         <div className="grid grid-cols-2 gap-3">
           <Button onClick={() => actions.goto('decision')}>{copy.fear.options}</Button>
-          <Button variant="outline" onClick={() => actions.decide('pause_anyway')}>
+          <Button data-coach="pause-anyway" variant="outline" onClick={() => actions.decide('pause_anyway')}>
             {copy.fear.pauseAnyway}
           </Button>
         </div>

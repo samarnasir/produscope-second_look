@@ -77,7 +77,7 @@ export function SipDetail({ flow }: { flow: Flow }) {
           {paused ? (
             <Button onClick={actions.resume}>{copy.sip.resume}</Button>
           ) : (
-            <Button onClick={actions.tapPause}>{copy.sip.pause}</Button>
+            <Button data-coach="pause" onClick={actions.tapPause}>{copy.sip.pause}</Button>
           )}
           <Button variant="outline" onClick={() => actions.openSheet('stop')} className="px-6">
             {copy.sip.stop}

@@ -76,7 +76,7 @@ export function Sheet({ title, subtitle, onClose, children, footer, labelId = 's
             </svg>
           </button>
         </div>
-        <div className="overflow-y-auto px-5 pb-5 pt-4">{children}</div>
+        <div className="no-scrollbar overflow-y-auto px-5 pb-5 pt-4">{children}</div>
         {footer && <div className="border-t border-graphite px-5 py-3">{footer}</div>}
       </div>
     </div>

@@ -29,7 +29,7 @@ export function DecisionScreen({ flow }: { flow: Flow }) {
           SIP active · next instalment {state.sip.nextLabel}
         </p>
 
-        <div className="mt-5 space-y-3">
+        <div data-coach="decision-list" className="mt-5 space-y-3">
           {items.map((i) => (
             <button
               key={i.choice}

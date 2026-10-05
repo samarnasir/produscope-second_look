@@ -26,7 +26,7 @@ export function Confirmation({ flow }: { flow: Flow }) {
         <h1 className="mt-5 text-[30px] font-bold text-paper">{copy.confirm.title}</h1>
         <p className="mt-0.5 text-sm font-semibold text-pulse-green">{copy.confirm.saved}</p>
 
-        <div className="mt-6 animate-rise">
+        <div data-coach="outcome" className="mt-6 animate-rise">
           <p className="text-lg font-semibold text-paper" data-testid="outcome-headline">
             {o.headline}
           </p>
