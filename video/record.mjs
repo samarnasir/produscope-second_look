@@ -5,6 +5,7 @@ import { chromium } from '@playwright/test'
 import { spawn, execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { addMusic } from './music.mjs'
 
 const PORT = 4175
 const OUT = path.resolve('video')
@@ -155,6 +156,10 @@ await browser.close()
 server.kill()
 const raw = await video.path()
 const mp4 = path.join(OUT, 'second-look-demo.mp4')
-execFileSync('ffmpeg', ['-y', '-i', raw, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '23', '-preset', 'slow', '-movflags', '+faststart', '-an', mp4], { stdio: 'ignore' })
+const silent = path.join(OUT, 'silent.mp4')
+execFileSync('ffmpeg', ['-y', '-i', raw, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '23', '-preset', 'slow', '-movflags', '+faststart', '-an', silent], { stdio: 'ignore' })
+const seconds = parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', silent]).toString())
+addMusic(silent, mp4, seconds)
+fs.rmSync(silent)
 fs.rmSync(path.join(OUT, 'raw'), { recursive: true, force: true })
 console.log('wrote', mp4)
